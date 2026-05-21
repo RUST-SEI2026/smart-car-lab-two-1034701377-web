@@ -18,28 +18,12 @@ impl Executor {
         for cmd in cmds.chars() {
             match cmd {
                 'B' => self.state.be_reverse(),
-                'M' => {
-                    if self.state.is_reverse {
-                        self.pose.forward(-1);
-                    } else {
-                        self.pose.forward(1);
+                _ => {
+                    let actions = self.state.assemble(cmd);
+                    for action in actions {
+                        action.perform(&mut self.pose);
                     }
                 }
-                'L' => {
-                    if self.state.is_reverse {
-                        self.pose.turn_right();
-                    } else {
-                        self.pose.turn_left();
-                    }
-                }
-                'R' => {
-                    if self.state.is_reverse {
-                        self.pose.turn_left();
-                    } else {
-                        self.pose.turn_right();
-                    }
-                }
-                _ => (),
             }
         }
     }
